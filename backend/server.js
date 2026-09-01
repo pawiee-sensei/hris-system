@@ -1,5 +1,7 @@
 const express = require("express");
 
+const errorHandler = require("./src/middleware/errorHandler");
+
 const app = express();
 
 // Parse JSON request bodies.
@@ -12,6 +14,8 @@ app.get("/", (req, res) => {
         message: "HRIS API is running"
     });
 });
+
+app.use(errorHandler);
 
 // Start the server.
 const PORT = process.env.PORT || 5000;
