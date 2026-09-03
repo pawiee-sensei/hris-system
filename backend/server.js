@@ -1,5 +1,6 @@
 const express = require("express");
 
+const authRoutes = require("./src/routes/authRoutes");
 const errorHandler = require("./src/middleware/errorHandler");
 
 const app = express();
@@ -14,6 +15,7 @@ app.get("/", (req, res) => {
         message: "HRIS API is running"
     });
 });
+app.use("/api/auth", authRoutes);
 
 app.use(errorHandler);
 
