@@ -1,11 +1,13 @@
 const bcrypt = require("bcrypt");
 
+
 const {
     findUserByEmail,
     findUserById,
     createUser
 } = require("../models/userModel");
 
+const generateToken = require("../utils/generateToken");
 const AppError = require("../utils/AppError");
 
 
@@ -60,12 +62,19 @@ const loginUserService = async ({ email, password }) => {
         throw new AppError("Invalid email or password",401);
     }
 
+    // Generate JWT after successful authentication.
+    const token = generateToken(user);
+
+
     // Return safe user information.
     // Never return password_hash to the controller/frontend.
     return {
-        id: user.id,
-        email: user.email,
-        role: user.role
+        token,
+        user: {
+            id: user.id,
+            email: user.email,
+            role: user.role
+        }
     };
 };
 
