@@ -49,8 +49,18 @@ const findEmployeeById = async (id) => {
     return rows[0];
 };
 
+const findEmployeeByUserId = async (userId) => {
+    const [rows] = await pool.execute(
+        `SELECT * FROM employees WHERE user_id = ?`,
+        [userId]
+    );
+
+    return rows[0];
+};
+
 module.exports = {
     createEmployee,
     findAllEmployees,
-    findEmployeeById
+    findEmployeeById,
+    findEmployeeByUserId
 };
