@@ -2,7 +2,8 @@ const express = require("express");
 
 const {
     registerController,
-    loginController
+    loginController,
+    meController
 } = require("../controllers/authController");
 
 const {
@@ -12,6 +13,7 @@ const {
 
 const handleValidationError = require("../middleware/handleValidationError");
 const asyncHandler = require("../utils/asyncHandler");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -30,5 +32,7 @@ router.post(
     handleValidationError,
     asyncHandler(loginController)
 );
+
+router.get("/me", authMiddleware, asyncHandler(meController));
 
 module.exports = router;
