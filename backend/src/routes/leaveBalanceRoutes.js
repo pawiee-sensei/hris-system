@@ -8,6 +8,8 @@ const {
 const authMiddleware = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
 const asyncHandler = require("../utils/asyncHandler");
+const handleValidationError = require("../middleware/handleValidationError");
+const { grantLeaveBalanceValidation } = require("../middleware/validation/leaveValidation");
 
 const router = express.Router();
 
@@ -16,6 +18,8 @@ router.post(
     "/",
     authMiddleware,
     authorize("ADMIN", "HR"),
+    grantLeaveBalanceValidation,
+    handleValidationError,
     asyncHandler(grantLeaveBalanceControllerFn)
 );
 

@@ -12,7 +12,11 @@ const {
 
 const {
     registerValidation,
-    loginValidation
+    loginValidation,
+    changePasswordValidation,
+    resetPasswordValidation,
+    forgotPasswordValidation,
+    resetPasswordWithTokenValidation
 } = require("../middleware/validation/authValidation");
 
 const handleValidationError = require("../middleware/handleValidationError");
@@ -44,6 +48,8 @@ router.get("/me", authMiddleware, asyncHandler(meController));
 router.patch(
     "/change-password",
     authMiddleware,
+    changePasswordValidation,
+    handleValidationError,
     asyncHandler(changePasswordControllerFn)
 );
 
@@ -52,17 +58,23 @@ router.patch(
     "/users/:id/reset-password",
     authMiddleware,
     authorize("ADMIN", "HR"),
+    resetPasswordValidation,
+    handleValidationError,
     asyncHandler(resetPasswordControllerFn)
 );
 // POST /api/auth/forgot-password
 router.post(
     "/forgot-password",
+    forgotPasswordValidation,
+    handleValidationError,
     asyncHandler(forgotPasswordControllerFn)
 );
 
 // POST /api/auth/reset-password
 router.post(
     "/reset-password",
+    resetPasswordWithTokenValidation,
+    handleValidationError,
     asyncHandler(resetPasswordWithTokenControllerFn)
 );
 

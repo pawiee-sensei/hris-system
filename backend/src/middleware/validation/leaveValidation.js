@@ -15,7 +15,18 @@ const reviewLeaveValidation = [
         .withMessage("Status must be APPROVED or REJECTED")
 ];
 
+const grantLeaveBalanceValidation = [
+    body("employeeId").isInt({ min: 1 }).withMessage("Valid employeeId is required"),
+    body("leaveType")
+        .isIn(["SICK", "VACATION", "EMERGENCY"])
+        .withMessage("Leave type must be SICK, VACATION, or EMERGENCY"),
+    body("totalCredits")
+        .isInt({ min: 1, max: 365 })
+        .withMessage("Total credits must be between 1 and 365")
+];
+
 module.exports = {
     fileLeaveValidation,
-    reviewLeaveValidation
+    reviewLeaveValidation,
+    grantLeaveBalanceValidation
 };
