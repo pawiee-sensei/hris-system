@@ -6,6 +6,7 @@ const errorHandler = require("./src/middleware/errorHandler");
 const employeeRoutes = require("./src/routes/employeeRoutes");
 const attendanceRoutes = require("./src/routes/attendanceRoutes");
 const leaveRoutes = require("./src/routes/leaveRoutes");
+const leaveBalanceRoutes = require("./src/routes/leaveBalanceRoutes");
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/leave", leaveRoutes);
+app.use("/api/leave-balances", leaveBalanceRoutes);
 
 app.use(errorHandler);
 
