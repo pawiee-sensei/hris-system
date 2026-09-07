@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const {
     findUserByEmail,
     findUserById,
-    createUser
+    createUser,
+    updatePasswordHash
 } = require("../models/userModel");
 
 const generateToken = require("../utils/generateToken");
@@ -78,7 +79,33 @@ const loginUserService = async ({ email, password }) => {
     };
 };
 
+const changePasswordService = async (userId, { currentPassword, newPassword }) => {
+    const user = await findUserById(userId);
+
+    const passwordMatches = await bcrypt.compare(currentPassword, user.password_hash);
+
+    if (!passwordMatches) {
+        throw new AppError("Current password is incorrect", 401);
+    }
+
+    const newPasswordHash = await bcrypt.hash(newPassword, 12);
+    await updatePasswordHash(userId, newPasswordHash);
+};
+
+const resetPasswordService = async (targetUserId, newPassword) => {
+    const user = await findUserById(targetUserId);
+
+    if (!user) {
+        throw new AppError("User not found", 404);
+    }
+
+    const newPasswordHash = await bcrypt.hash(newPassword, 12);
+    await updatePasswordHash(targetUserId, newPasswordHash);
+};
+
 module.exports = {
     registerUserService,
-    loginUserService
+    loginUserService,
+    changePasswordService,
+    resetPasswordService
 };

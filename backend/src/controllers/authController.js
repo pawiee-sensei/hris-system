@@ -1,7 +1,9 @@
 const {
     registerUserService,
-    loginUserService
-} = require("../services/authService");
+    loginUserService,
+    changePasswordService,
+    resetPasswordService
+} = require("../services/authService"); 
 
 // Handle user registration request.
 const registerController = async (req, res) => {
@@ -42,8 +44,29 @@ const meController = (req, res) => {
     });
 };
 
+const changePasswordControllerFn = async (req, res) => {
+    await changePasswordService(req.user.userId, req.body);
+
+    res.status(200).json({
+        success: true,
+        message: "Password changed successfully"
+    });
+};
+
+const resetPasswordControllerFn = async (req, res) => {
+    await resetPasswordService(req.params.id, req.body.newPassword);
+
+    res.status(200).json({
+        success: true,
+        message: "Password reset successfully"
+    });
+};
+
 module.exports = {
     registerController,
     loginController,
-    meController
+    meController,
+    changePasswordControllerFn,
+    resetPasswordControllerFn
 };
+

@@ -3,7 +3,9 @@ const express = require("express");
 const {
     registerController,
     loginController,
-    meController
+    meController,
+    changePasswordControllerFn,
+    resetPasswordControllerFn
 } = require("../controllers/authController");
 
 const {
@@ -14,6 +16,7 @@ const {
 const handleValidationError = require("../middleware/handleValidationError");
 const asyncHandler = require("../utils/asyncHandler");
 const authMiddleware = require("../middleware/authMiddleware");
+const authorize = require("../middleware/authorize");
 
 const router = express.Router();
 
@@ -34,5 +37,20 @@ router.post(
 );
 
 router.get("/me", authMiddleware, asyncHandler(meController));
+
+// PATCH /api/auth/change-password
+router.patch(
+    "/change-password",
+    authMiddleware,
+    asyncHandler(changePasswordControllerFn)
+);
+
+// PATCH /api/auth/users/:id/reset-password
+router.patch(
+    "/users/:id/reset-password",
+    authMiddleware,
+    authorize("ADMIN", "HR"),
+    asyncHandler(resetPasswordControllerFn)
+);
 
 module.exports = router;

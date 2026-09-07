@@ -57,9 +57,17 @@ const createUser = async ({ email, passwordHash, role = "EMPLOYEE" }) => {
     return result.insertId;
 };
 
+const updatePasswordHash = async (id, passwordHash) => {
+    await pool.execute(
+        `UPDATE users SET password_hash = ? WHERE id = ?`,
+        [passwordHash, id]
+    );
+};
+
 module.exports = {
     findUserByEmail,
     findUserById,
-    createUser
+    createUser,
+    updatePasswordHash
 };
 
