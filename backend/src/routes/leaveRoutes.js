@@ -10,6 +10,11 @@ const {
 const authMiddleware = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
 const asyncHandler = require("../utils/asyncHandler");
+const handleValidationError = require("../middleware/handleValidationError");
+const {
+    fileLeaveValidation,
+    reviewLeaveValidation
+} = require("../middleware/validation/leaveValidation");
 
 const router = express.Router();
 
@@ -17,6 +22,8 @@ const router = express.Router();
 router.post(
     "/",
     authMiddleware,
+    fileLeaveValidation,
+    handleValidationError,
     asyncHandler(fileLeaveControllerFn)
 );
 
@@ -40,6 +47,8 @@ router.patch(
     "/:id/review",
     authMiddleware,
     authorize("ADMIN", "HR"),
+    reviewLeaveValidation,
+    handleValidationError,
     asyncHandler(reviewLeaveControllerFn)
 );
 

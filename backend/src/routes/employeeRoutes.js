@@ -9,6 +9,8 @@ const {
 const authMiddleware = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
 const asyncHandler = require("../utils/asyncHandler");
+const handleValidationError = require("../middleware/handleValidationError");
+const { createEmployeeValidation } = require("../middleware/validation/employeeValidation");
 
 const router = express.Router();
 
@@ -17,6 +19,8 @@ router.post(
     "/",
     authMiddleware,
     authorize("ADMIN", "HR"),
+    createEmployeeValidation,
+    handleValidationError,
     asyncHandler(createEmployeeControllerFn)
 );
 

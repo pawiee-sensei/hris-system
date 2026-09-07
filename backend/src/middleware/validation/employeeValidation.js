@@ -1,0 +1,17 @@
+const { body } = require("express-validator");
+
+const createEmployeeValidation = [
+    body("userId").isInt({ min: 1 }).withMessage("Valid userId is required"),
+    body("employeeNumber").trim().notEmpty().withMessage("Employee number is required"),
+    body("firstName").trim().notEmpty().withMessage("First name is required"),
+    body("lastName").trim().notEmpty().withMessage("Last name is required"),
+    body("phone").optional().isString(),
+    body("birthDate").optional().isDate().withMessage("Birth date must be a valid date"),
+    body("department").optional().isString(),
+    body("position").optional().isString(),
+    body("dateHired").optional().isDate().withMessage("Date hired must be a valid date")
+];
+
+module.exports = {
+    createEmployeeValidation
+};
