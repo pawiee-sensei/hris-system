@@ -64,10 +64,40 @@ const updatePasswordHash = async (id, passwordHash) => {
     );
 };
 
+const updateResetToken = async (id, token, expiresAt) => {
+    await pool.execute(
+        `UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE id = ?`,
+        [token, expiresAt, id]
+    );
+};
+
+const findUserByResetToken = async (token) => {
+    const [rows] = await pool.execute(
+        `
+        SELECT id, email, reset_token_expires
+        FROM users
+        WHERE reset_token = ?
+        `,
+        [token]
+    );
+
+    return rows[0];
+};
+
+const clearResetToken = async (id) => {
+    await pool.execute(
+        `UPDATE users SET reset_token = NULL, reset_token_expires = NULL WHERE id = ?`,
+        [id]
+    );
+};
+
 module.exports = {
     findUserByEmail,
     findUserById,
     createUser,
-    updatePasswordHash
+    updatePasswordHash,
+    updateResetToken,
+    findUserByResetToken,
+    clearResetToken
 };
 

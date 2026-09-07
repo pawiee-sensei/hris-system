@@ -1,14 +1,20 @@
 const bcrypt = require("bcrypt");
 
 
+const crypto = require("crypto");
+
 const {
     findUserByEmail,
     findUserById,
     createUser,
-    updatePasswordHash
+    updatePasswordHash,
+    updateResetToken,
+    findUserByResetToken,
+    clearResetToken
 } = require("../models/userModel");
 
 const generateToken = require("../utils/generateToken");
+const sendResetEmail = require("../utils/mailer");
 const AppError = require("../utils/AppError");
 
 
@@ -103,9 +109,42 @@ const resetPasswordService = async (targetUserId, newPassword) => {
     await updatePasswordHash(targetUserId, newPasswordHash);
 };
 
+const forgotPasswordService = async (email) => {
+    const user = await findUserByEmail(email);
+
+    // Don't reveal whether the email exists.
+    if (!user) {
+        return;
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+
+    await updateResetToken(user.id, resetToken, expiresAt);
+    await sendResetEmail(user.email, resetToken);
+};
+
+const resetPasswordWithTokenService = async (token, newPassword) => {
+    const user = await findUserByResetToken(token);
+
+    if (!user) {
+        throw new AppError("Invalid or expired reset token", 400);
+    }
+
+    if (new Date(user.reset_token_expires) < new Date()) {
+        throw new AppError("Invalid or expired reset token", 400);
+    }
+
+    const newPasswordHash = await bcrypt.hash(newPassword, 12);
+    await updatePasswordHash(user.id, newPasswordHash);
+    await clearResetToken(user.id);
+};
+
 module.exports = {
     registerUserService,
     loginUserService,
     changePasswordService,
-    resetPasswordService
+    resetPasswordService,
+    forgotPasswordService,
+    resetPasswordWithTokenService
 };

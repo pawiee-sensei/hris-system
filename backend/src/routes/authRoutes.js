@@ -5,7 +5,9 @@ const {
     loginController,
     meController,
     changePasswordControllerFn,
-    resetPasswordControllerFn
+    resetPasswordControllerFn,
+    forgotPasswordControllerFn,
+    resetPasswordWithTokenControllerFn
 } = require("../controllers/authController");
 
 const {
@@ -51,6 +53,17 @@ router.patch(
     authMiddleware,
     authorize("ADMIN", "HR"),
     asyncHandler(resetPasswordControllerFn)
+);
+// POST /api/auth/forgot-password
+router.post(
+    "/forgot-password",
+    asyncHandler(forgotPasswordControllerFn)
+);
+
+// POST /api/auth/reset-password
+router.post(
+    "/reset-password",
+    asyncHandler(resetPasswordWithTokenControllerFn)
 );
 
 module.exports = router;
