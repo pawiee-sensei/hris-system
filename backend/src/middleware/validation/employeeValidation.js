@@ -12,6 +12,12 @@ const createEmployeeValidation = [
     body("dateHired").optional().isDate().withMessage("Date hired must be a valid date")
 ];
 
+const updateMyProfileValidation = [
+    body("phone").optional().isString(),
+    body("birthDate").optional().isDate().withMessage("Birth date must be a valid date")
+];
+
 module.exports = {
-    createEmployeeValidation
+    createEmployeeValidation,
+    updateMyProfileValidation
 };

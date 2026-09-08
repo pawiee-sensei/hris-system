@@ -58,9 +58,17 @@ const findEmployeeByUserId = async (userId) => {
     return rows[0];
 };
 
+const updateOwnProfile = async (id, { phone, birthDate }) => {
+    await pool.execute(
+        `UPDATE employees SET phone = ?, birth_date = ? WHERE id = ?`,
+        [phone, birthDate, id]
+    );
+};
+
 module.exports = {
     createEmployee,
     findAllEmployees,
     findEmployeeById,
-    findEmployeeByUserId
+    findEmployeeByUserId,
+    updateOwnProfile
 };
