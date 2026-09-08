@@ -7,7 +7,7 @@ const createEmployee = async ({
     lastName,
     phone,
     birthDate,
-    department,
+    departmentId,
     position,
     dateHired
 }) => {
@@ -20,13 +20,13 @@ const createEmployee = async ({
             last_name,
             phone,
             birth_date,
-            department,
+            department_id,
             position,
             date_hired
         )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `,
-        [userId, employeeNumber, firstName, lastName, phone, birthDate, department, position, dateHired]
+        [userId, employeeNumber, firstName, lastName, phone, birthDate, departmentId, position, dateHired]
     );
 
     return result.insertId;

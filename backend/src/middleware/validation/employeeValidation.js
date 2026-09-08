@@ -7,7 +7,7 @@ const createEmployeeValidation = [
     body("lastName").trim().notEmpty().withMessage("Last name is required"),
     body("phone").optional().isString(),
     body("birthDate").optional().isDate().withMessage("Birth date must be a valid date"),
-    body("department").optional().isString(),
+    body("departmentId").optional().isInt({ min: 1 }).withMessage("departmentId must be a valid number"),
     body("position").optional().isString(),
     body("dateHired").optional().isDate().withMessage("Date hired must be a valid date")
 ];

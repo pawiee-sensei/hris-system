@@ -7,6 +7,7 @@ const employeeRoutes = require("./src/routes/employeeRoutes");
 const attendanceRoutes = require("./src/routes/attendanceRoutes");
 const leaveRoutes = require("./src/routes/leaveRoutes");
 const leaveBalanceRoutes = require("./src/routes/leaveBalanceRoutes");
+const departmentRoutes = require("./src/routes/departmentRoutes");
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use("/api/employees", employeeRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/leave", leaveRoutes);
 app.use("/api/leave-balances", leaveBalanceRoutes);
+app.use("/api/departments", departmentRoutes);
 
 app.use(errorHandler);
 
