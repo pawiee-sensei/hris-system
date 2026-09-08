@@ -8,6 +8,7 @@ const attendanceRoutes = require("./src/routes/attendanceRoutes");
 const leaveRoutes = require("./src/routes/leaveRoutes");
 const leaveBalanceRoutes = require("./src/routes/leaveBalanceRoutes");
 const departmentRoutes = require("./src/routes/departmentRoutes");
+const announcementRoutes = require("./src/routes/announcementRoutes");
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/api/attendance", attendanceRoutes);
 app.use("/api/leave", leaveRoutes);
 app.use("/api/leave-balances", leaveBalanceRoutes);
 app.use("/api/departments", departmentRoutes);
+app.use("/api/announcements", announcementRoutes);
 
 app.use(errorHandler);
 
