@@ -1,25 +1,25 @@
 const pool = require("../../config/db");
 
-const clockIn = async ({ employeeId, date, timeIn }) => {
+const clockIn = async ({ employeeId, date, timeIn, lateMinutes }) => {
     const [result] = await pool.execute(
         `
-        INSERT INTO attendance (employee_id, date, time_in)
-        VALUES (?, ?, ?)
+        INSERT INTO attendance (employee_id, date, time_in, late_minutes)
+        VALUES (?, ?, ?, ?)
         `,
-        [employeeId, date, timeIn]
+        [employeeId, date, timeIn, lateMinutes]
     );
 
     return result.insertId;
 };
 
-const clockOut = async ({ employeeId, date, timeOut }) => {
+const clockOut = async ({ employeeId, date, timeOut, undertimeMinutes }) => {
     await pool.execute(
         `
         UPDATE attendance
-        SET time_out = ?
+        SET time_out = ?, undertime_minutes = ?
         WHERE employee_id = ? AND date = ?
         `,
-        [timeOut, employeeId, date]
+        [timeOut, undertimeMinutes, employeeId, date]
     );
 };
 

@@ -9,6 +9,25 @@ const { findEmployeeByUserId } = require("../models/employeeModel");
 
 const AppError = require("../utils/AppError");
 
+// Fixed company shift — adjust these two values if the shift ever changes.
+const SHIFT_START = "09:00:00";
+const SHIFT_END = "18:00:00";
+
+const timeToMinutes = (time) => {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 60 + minutes;
+};
+
+const calculateLateMinutes = (timeIn) => {
+    const diff = timeToMinutes(timeIn) - timeToMinutes(SHIFT_START);
+    return diff > 0 ? diff : 0;
+};
+
+const calculateUndertimeMinutes = (timeOut) => {
+    const diff = timeToMinutes(SHIFT_END) - timeToMinutes(timeOut);
+    return diff > 0 ? diff : 0;
+};
+
 const resolveEmployeeId = async (userId) => {
     const employee = await findEmployeeByUserId(userId);
 
@@ -30,13 +49,16 @@ const clockInService = async (userId) => {
         throw new AppError("Already clocked in today", 409);
     }
 
+    const lateMinutes = calculateLateMinutes(now);
+
     const attendanceId = await clockIn({
         employeeId,
         date: today,
-        timeIn: now
+        timeIn: now,
+        lateMinutes
     });
 
-    return { id: attendanceId, employeeId, date: today, timeIn: now };
+    return { id: attendanceId, employeeId, date: today, timeIn: now, lateMinutes };
 };
 
 const clockOutService = async (userId) => {
@@ -54,9 +76,11 @@ const clockOutService = async (userId) => {
         throw new AppError("Already clocked out today", 409);
     }
 
-    await clockOut({ employeeId, date: today, timeOut: now });
+    const undertimeMinutes = calculateUndertimeMinutes(now);
 
-    return { employeeId, date: today, timeOut: now };
+    await clockOut({ employeeId, date: today, timeOut: now, undertimeMinutes });
+
+    return { employeeId, date: today, timeOut: now, undertimeMinutes };
 };
 
 const getMyAttendanceService = async (userId) => {
