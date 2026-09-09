@@ -1,4 +1,7 @@
 const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
+const rateLimit = require("express-rate-limit");
 
 const authRoutes = require("./src/routes/authRoutes");
 const errorHandler = require("./src/middleware/errorHandler");
@@ -11,6 +14,21 @@ const departmentRoutes = require("./src/routes/departmentRoutes");
 const announcementRoutes = require("./src/routes/announcementRoutes");
 
 const app = express();
+
+// Allow the frontend (running on a different port) to call this API.
+app.use(cors({
+    origin: "http://localhost:5173"
+}));
+
+// Log every incoming request to the terminal for debugging.
+app.use(morgan("dev"));
+
+// Cap requests per IP — loosened for active development.
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 1000
+});
+app.use(limiter);
 
 // Parse JSON request bodies.
 // Example: req.body.email
