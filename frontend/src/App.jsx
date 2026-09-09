@@ -6,12 +6,20 @@ import ForgotPassword from './pages/auth/ForgotPassword'
 import ResetPassword from './pages/auth/ResetPassword'
 import AppLayout from './components/AppLayout'
 
+// Employee pages
 import MyProfile from './pages/employee/MyProfile'
 import MyAttendance from './pages/employee/MyAttendance'
 import MyLeave from './pages/employee/MyLeave'
 import MyLeaveBalance from './pages/employee/MyLeaveBalance'
 import Announcements from './pages/shared/Announcements'
 import ChangePassword from './pages/shared/ChangePassword'
+// Admin pages
+import RoleRoute from './routes/RoleRoute'
+import EmployeeList from './pages/admin/EmployeeList'
+import DepartmentList from './pages/admin/DepartmentList'
+import LeaveApprovals from './pages/admin/LeaveApprovals'
+import LeaveBalanceGrant from './pages/admin/LeaveBalanceGrant'
+import AnnouncementCreate from './pages/admin/AnnouncementCreate'
 
 function App() {
   return (
@@ -83,6 +91,61 @@ function App() {
         element={
           <ProtectedRoute>
             <AppLayout><ChangePassword /></AppLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/employees"
+        element={
+          <ProtectedRoute>
+            <RoleRoute allowedRoles={["ADMIN", "HR"]}>
+              <AppLayout><EmployeeList /></AppLayout>
+            </RoleRoute>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/departments"
+        element={
+          <ProtectedRoute>
+            <RoleRoute allowedRoles={["ADMIN", "HR"]}>
+              <AppLayout><DepartmentList /></AppLayout>
+            </RoleRoute>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/leave-approvals"
+        element={
+          <ProtectedRoute>
+            <RoleRoute allowedRoles={["ADMIN", "HR"]}>
+              <AppLayout><LeaveApprovals /></AppLayout>
+            </RoleRoute>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/leave-balance-grant"
+        element={
+          <ProtectedRoute>
+            <RoleRoute allowedRoles={["ADMIN", "HR"]}>
+              <AppLayout><LeaveBalanceGrant /></AppLayout>
+            </RoleRoute>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/announcements/create"
+        element={
+          <ProtectedRoute>
+            <RoleRoute allowedRoles={["ADMIN", "HR"]}>
+              <AppLayout><AnnouncementCreate /></AppLayout>
+            </RoleRoute>
           </ProtectedRoute>
         }
       />
