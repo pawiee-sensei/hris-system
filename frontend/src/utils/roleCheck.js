@@ -1,0 +1,1 @@
+export const isAdminOrHR = (role) => ["ADMIN", "HR"].includes(role);
