@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { loginUser } from "../../api/authApi";
-import useAuth from "../../hooks/useAuth";
+import { registerUser } from "../../api/authApi";
 
-const Login = () => {
+const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState(false);
 
-    const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -16,19 +15,20 @@ const Login = () => {
         setError("");
 
         try {
-            const response = await loginUser({ email, password });
-            login(response.data.token, response.data.user);
-            navigate("/dashboard");
+            await registerUser({ email, password });
+            setSuccess(true);
+            setTimeout(() => navigate("/login"), 1500);
         } catch (err) {
-            setError(err.response?.data?.message || "Login failed");
+            setError(err.response?.data?.message || "Registration failed");
         }
     };
 
     return (
         <div>
-            <h1>Login</h1>
+            <h1>Register</h1>
 
             {error && <p>{error}</p>}
+            {success && <p>Account created! Redirecting to login...</p>}
 
             <form onSubmit={handleSubmit}>
                 <div>
@@ -51,14 +51,12 @@ const Login = () => {
                     />
                 </div>
 
-                <button type="submit">Log In</button>
+                <button type="submit">Register</button>
             </form>
 
-            <Link to="/forgot-password">Forgot password?</Link>
-            <br />
-            <Link to="/register">Don't have an account? Register</Link>
+            <Link to="/login">Already have an account? Log in</Link>
         </div>
     );
 };
 
-export default Login;
+export default Register;
