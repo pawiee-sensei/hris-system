@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../../api/authApi";
+import getErrorMessage from "../../utils/getErrorMessage";
 
 const Register = () => {
     const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ const Register = () => {
             setSuccess(true);
             setTimeout(() => navigate("/login"), 1500);
         } catch (err) {
-            setError(err.response?.data?.message || "Registration failed");
+            setError(getErrorMessage(err, "Registration failed"));
         }
     };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../../api/authApi";
 import useAuth from "../../hooks/useAuth";
+import getErrorMessage from "../../utils/getErrorMessage";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -20,7 +21,7 @@ const Login = () => {
             login(response.data.token, response.data.user);
             navigate("/dashboard");
         } catch (err) {
-            setError(err.response?.data?.message || "Login failed");
+            setError(getErrorMessage(err, "Login failed"));
         }
     };
 

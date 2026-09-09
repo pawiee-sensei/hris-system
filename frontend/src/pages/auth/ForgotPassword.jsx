@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { forgotPassword } from "../../api/authApi";
+import getErrorMessage from "../../utils/getErrorMessage";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ const ForgotPassword = () => {
             await forgotPassword(email);
             setSubmitted(true);
         } catch (err) {
-            setError(err.response?.data?.message || "Something went wrong");
+            setError(getErrorMessage(err, "Something went wrong"));
         }
     };
 

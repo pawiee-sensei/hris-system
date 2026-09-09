@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { resetPassword } from "../../api/authApi";
+import getErrorMessage from "../../utils/getErrorMessage";
 
 const ResetPassword = () => {
     const [searchParams] = useSearchParams();
@@ -27,9 +28,7 @@ const ResetPassword = () => {
             setSuccess(true);
             setTimeout(() => navigate("/login"), 1500);
         } catch (err) {
-            const validationErrors = err.response?.data?.errors;
-            const message = validationErrors?.[0]?.message || err.response?.data?.message || "Reset failed";
-            setError(message);
+            setError(getErrorMessage(err, "Reset failed"));
         }
     };
 
