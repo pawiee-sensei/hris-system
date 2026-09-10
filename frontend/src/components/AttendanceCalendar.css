@@ -1,7 +1,7 @@
 .attendance-calendar {
     background-color: var(--color-surface);
     border-radius: 12px;
-    padding: 24px;
+    padding: 14px;
     box-shadow: var(--shadow-sm);
 }
 
@@ -9,9 +9,9 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 8px;
 }
 
 .cal-title {
@@ -23,9 +23,9 @@
 .cal-icon {
     background-color: #dbeafe;
     color: var(--color-primary);
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -33,21 +33,22 @@
 
 .cal-title h3 {
     margin: 0;
-    font-size: 18px;
+    font-size: 14px;
     color: var(--color-primary);
 }
 
 .cal-title p {
-    margin: 2px 0 0;
-    font-size: 13px;
+    margin: 0;
+    font-size: 11px;
     color: var(--color-text-muted);
 }
 
 .cal-nav {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
     font-weight: 600;
+    font-size: 13px;
     color: var(--color-primary);
 }
 
@@ -67,14 +68,14 @@
 .cal-weekdays, .cal-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
+    gap: 3px;
 }
 
 .cal-weekday {
     text-align: center;
-    font-size: 12px;
+    font-size: 10px;
     color: var(--color-text-muted);
-    padding-bottom: 8px;
+    padding-bottom: 4px;
 }
 
 .cal-cell {
@@ -83,8 +84,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    font-size: 13px;
-    max-width: 40px;
+    font-size: 11px;
+    max-width: 24px;
     margin: 0 auto;
     width: 100%;
     transition: var(--transition);
@@ -129,10 +130,10 @@
 }
 
 .cal-details {
-    margin-top: 20px;
+    margin-top: 10px;
     background-color: var(--color-bg);
     border-radius: var(--radius);
-    padding: 16px 20px;
+    padding: 10px 14px;
     animation: fadeIn 0.25s ease;
 }
 
@@ -188,9 +189,9 @@
 .cal-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 20px;
-    font-size: 12px;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 10px;
     color: var(--color-text-muted);
 }
 

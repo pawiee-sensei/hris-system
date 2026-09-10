@@ -1,13 +1,17 @@
 import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
 import "./AppLayout.css";
 
 const AppLayout = ({ children }) => {
     return (
         <div className="app-layout">
             <Sidebar />
-            <main className="app-content">
-                {children}
-            </main>
+            <div className="app-body">
+                <Navbar />
+                <main className="app-content">
+                    {children}
+                </main>
+            </div>
         </div>
     );
 };
