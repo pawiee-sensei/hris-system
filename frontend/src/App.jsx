@@ -5,6 +5,7 @@ import Register from './pages/auth/Register'
 import ForgotPassword from './pages/auth/ForgotPassword'
 import ResetPassword from './pages/auth/ResetPassword'
 import AppLayout from './components/AppLayout'
+import Dashboard from './pages/shared/Dashboard'
 
 // Employee pages
 import MyProfile from './pages/employee/MyProfile'
@@ -34,9 +35,7 @@ function App() {
         path="/dashboard"
         element={
           <ProtectedRoute>
-            <AppLayout>
-              <div>Dashboard coming soon</div>
-            </AppLayout>
+            <AppLayout><Dashboard /></AppLayout>
           </ProtectedRoute>
         }
       />

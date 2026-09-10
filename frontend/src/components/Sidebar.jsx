@@ -1,6 +1,20 @@
 import { NavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { isAdminOrHR } from "../utils/roleCheck";
+import {
+    LayoutDashboard,
+    User,
+    Clock,
+    Calendar,
+    Wallet,
+    Megaphone,
+    KeyRound,
+    Users,
+    Building2,
+    ClipboardCheck,
+    LogOut
+} from "lucide-react";
+import "./Sidebar.css";
 
 const Sidebar = () => {
     const { user, logout } = useAuth();
@@ -16,28 +30,78 @@ const Sidebar = () => {
                 <p>{user.email} ({user.role})</p>
             </div>
 
-            <ul>
-                <li><NavLink to="/dashboard">Dashboard</NavLink></li>
-                <li><NavLink to="/profile">My Profile</NavLink></li>
-                <li><NavLink to="/attendance">My Attendance</NavLink></li>
-                <li><NavLink to="/leave">My Leave</NavLink></li>
-                <li><NavLink to="/leave-balance">My Leave Balance</NavLink></li>
-                <li><NavLink to="/announcements">Announcements</NavLink></li>
-                <li><NavLink to="/change-password">Change Password</NavLink></li>
+            <ul className="sidebar-links">
+                <li>
+                    <NavLink to="/dashboard" className="sidebar-link">
+                        <LayoutDashboard size={18} /> Dashboard
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/profile" className="sidebar-link">
+                        <User size={18} /> My Profile
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/attendance" className="sidebar-link">
+                        <Clock size={18} /> My Attendance
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/leave" className="sidebar-link">
+                        <Calendar size={18} /> My Leave
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/leave-balance" className="sidebar-link">
+                        <Wallet size={18} /> My Leave Balance
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/announcements" className="sidebar-link">
+                        <Megaphone size={18} /> Announcements
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/change-password" className="sidebar-link">
+                        <KeyRound size={18} /> Change Password
+                    </NavLink>
+                </li>
 
                 {isAdminOrHR(user.role) && (
                     <>
-                        <li><strong>Admin/HR</strong></li>
-                        <li><NavLink to="/admin/employees">Employees</NavLink></li>
-                        <li><NavLink to="/admin/departments">Departments</NavLink></li>
-                        <li><NavLink to="/admin/leave-approvals">Leave Approvals</NavLink></li>
-                        <li><NavLink to="/admin/leave-balance-grant">Grant Leave Balance</NavLink></li>
-                        <li><NavLink to="/admin/announcements/create">Post Announcement</NavLink></li>
+                        <li className="sidebar-section">Admin/HR</li>
+                        <li>
+                            <NavLink to="/admin/employees" className="sidebar-link">
+                                <Users size={18} /> Employees
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/admin/departments" className="sidebar-link">
+                                <Building2 size={18} /> Departments
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/admin/leave-approvals" className="sidebar-link">
+                                <ClipboardCheck size={18} /> Leave Approvals
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/admin/leave-balance-grant" className="sidebar-link">
+                                <Wallet size={18} /> Grant Leave Balance
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/admin/announcements/create" className="sidebar-link">
+                                <Megaphone size={18} /> Post Announcement
+                            </NavLink>
+                        </li>
                     </>
                 )}
             </ul>
 
-            <button onClick={logout}>Logout</button>
+            <button className="sidebar-logout" onClick={logout}>
+                <LogOut size={18} /> Logout
+            </button>
         </nav>
     );
 };
