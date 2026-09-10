@@ -8,11 +8,13 @@ import { getAllLeave } from "../../api/leaveApi";
 import { getAllEmployees } from "../../api/employeeApi";
 import { formatDate } from "../../utils/formatDate";
 import Loader from "../../components/Loader";
+import AttendanceCalendar from "../../components/AttendanceCalendar";
 
 const Dashboard = () => {
     const { user } = useAuth();
     const [loading, setLoading] = useState(true);
     const [clockedInToday, setClockedInToday] = useState(false);
+    const [attendanceRecords, setAttendanceRecords] = useState([]);
     const [balances, setBalances] = useState([]);
     const [announcements, setAnnouncements] = useState([]);
     const [pendingCount, setPendingCount] = useState(0);
@@ -22,6 +24,7 @@ const Dashboard = () => {
         const loadDashboard = async () => {
             try {
                 const attendanceRes = await getMyAttendance();
+                setAttendanceRecords(attendanceRes.data);
                 const today = new Date().toISOString().slice(0, 10);
                 const todayRecord = attendanceRes.data.find((r) => r.date === today);
                 setClockedInToday(!!todayRecord);
@@ -70,6 +73,7 @@ const Dashboard = () => {
             <section>
                 <h2>Today's Attendance</h2>
                 <p>{clockedInToday ? "You've clocked in today" : "You haven't clocked in today"}</p>
+                {attendanceRecords.length > 0 && <AttendanceCalendar records={attendanceRecords} />}
             </section>
 
             {balances.length > 0 && (

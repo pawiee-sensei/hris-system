@@ -4,6 +4,7 @@ import { formatDate } from "../../utils/formatDate";
 import getErrorMessage from "../../utils/getErrorMessage";
 import Loader from "../../components/Loader";
 import EmptyState from "../../components/EmptyState";
+import AttendanceCalendar from "../../components/AttendanceCalendar";
 
 const MyAttendance = () => {
     const [records, setRecords] = useState([]);
@@ -61,6 +62,8 @@ const MyAttendance = () => {
 
             <button onClick={handleClockIn}>Clock In</button>
             <button onClick={handleClockOut}>Clock Out</button>
+
+            <AttendanceCalendar records={records} />
 
             {records.length === 0 ? (
                 <EmptyState message="No attendance records yet" />
