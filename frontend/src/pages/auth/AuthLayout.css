@@ -1,0 +1,104 @@
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+}
+
+.auth-card {
+    background-color: var(--color-surface);
+    padding: 40px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    max-width: 380px;
+    animation: fadeIn 0.4s ease;
+}
+
+.auth-brand {
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+}
+
+.auth-card h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.auth-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.auth-card label {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin-bottom: 4px;
+    display: block;
+}
+
+.auth-card input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.auth-card input:focus {
+    outline: none;
+    border-color: var(--color-primary-light);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.auth-card button[type="submit"] {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border: none;
+    padding: 12px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.auth-card button[type="submit"]:hover {
+    background-color: var(--color-primary-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.auth-card a {
+    color: var(--color-primary-light);
+    font-size: 13px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    margin-top: 12px;
+}
+
+.auth-card a:hover {
+    text-decoration: underline;
+}
+
+.auth-error {
+    background-color: #fee2e2;
+    color: var(--color-error);
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    font-size: 13px;
+}
+
+.auth-success {
+    background-color: #dcfce7;
+    color: var(--color-success);
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    font-size: 13px;
+}

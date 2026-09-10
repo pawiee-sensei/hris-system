@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../../api/authApi";
 import useAuth from "../../hooks/useAuth";
 import getErrorMessage from "../../utils/getErrorMessage";
+import AuthLayout from "./AuthLayout";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -26,10 +27,10 @@ const Login = () => {
     };
 
     return (
-        <div>
+        <AuthLayout>
             <h1>Login</h1>
 
-            {error && <p>{error}</p>}
+            {error && <p className="auth-error">{error}</p>}
 
             <form onSubmit={handleSubmit}>
                 <div>
@@ -56,9 +57,8 @@ const Login = () => {
             </form>
 
             <Link to="/forgot-password">Forgot password?</Link>
-            <br />
             <Link to="/register">Don't have an account? Register</Link>
-        </div>
+        </AuthLayout>
     );
 };
 

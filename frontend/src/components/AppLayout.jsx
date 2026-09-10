@@ -1,10 +1,11 @@
 import Sidebar from "./Sidebar";
+import "./AppLayout.css";
 
 const AppLayout = ({ children }) => {
     return (
-        <div style={{ display: "flex" }}>
+        <div className="app-layout">
             <Sidebar />
-            <main style={{ flex: 1 }}>
+            <main className="app-content">
                 {children}
             </main>
         </div>

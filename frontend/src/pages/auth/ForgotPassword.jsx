@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { forgotPassword } from "../../api/authApi";
 import getErrorMessage from "../../utils/getErrorMessage";
+import AuthLayout from "./AuthLayout";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState("");
@@ -21,13 +22,13 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div>
+        <AuthLayout>
             <h1>Forgot Password</h1>
 
-            {error && <p>{error}</p>}
+            {error && <p className="auth-error">{error}</p>}
 
             {submitted ? (
-                <p>If that email exists, a reset link has been sent. Check your inbox.</p>
+                <p className="auth-success">If that email exists, a reset link has been sent. Check your inbox.</p>
             ) : (
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -45,7 +46,7 @@ const ForgotPassword = () => {
             )}
 
             <Link to="/login">Back to login</Link>
-        </div>
+        </AuthLayout>
     );
 };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../../api/authApi";
 import getErrorMessage from "../../utils/getErrorMessage";
+import AuthLayout from "./AuthLayout";
 
 const Register = () => {
     const [email, setEmail] = useState("");
@@ -25,11 +26,11 @@ const Register = () => {
     };
 
     return (
-        <div>
+        <AuthLayout>
             <h1>Register</h1>
 
-            {error && <p>{error}</p>}
-            {success && <p>Account created! Redirecting to login...</p>}
+            {error && <p className="auth-error">{error}</p>}
+            {success && <p className="auth-success">Account created! Redirecting to login...</p>}
 
             <form onSubmit={handleSubmit}>
                 <div>
@@ -56,7 +57,7 @@ const Register = () => {
             </form>
 
             <Link to="/login">Already have an account? Log in</Link>
-        </div>
+        </AuthLayout>
     );
 };
 

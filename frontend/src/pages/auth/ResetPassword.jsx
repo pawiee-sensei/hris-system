@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { resetPassword } from "../../api/authApi";
 import getErrorMessage from "../../utils/getErrorMessage";
+import AuthLayout from "./AuthLayout";
 
 const ResetPassword = () => {
     const [searchParams] = useSearchParams();
@@ -33,11 +34,11 @@ const ResetPassword = () => {
     };
 
     return (
-        <div>
+        <AuthLayout>
             <h1>Reset Password</h1>
 
-            {error && <p>{error}</p>}
-            {success && <p>Password reset successfully. Redirecting to login...</p>}
+            {error && <p className="auth-error">{error}</p>}
+            {success && <p className="auth-success">Password reset successfully. Redirecting to login...</p>}
 
             {!success && (
                 <form onSubmit={handleSubmit}>
@@ -66,7 +67,7 @@ const ResetPassword = () => {
             )}
 
             <Link to="/login">Back to login</Link>
-        </div>
+        </AuthLayout>
     );
 };
 
