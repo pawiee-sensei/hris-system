@@ -30,7 +30,7 @@ const createEmployee = async ({
     );
 
     return result.insertId;
-};
+};  
 
 const findAllEmployees = async () => {
     const [rows] = await pool.execute(
@@ -65,10 +65,33 @@ const updateOwnProfile = async (id, { phone, birthDate }) => {
     );
 };
 
+const updateEmployee = async (id, {
+    firstName, lastName, phone, birthDate, departmentId, position, dateHired
+}) => {
+    await pool.execute(
+        `
+        UPDATE employees
+        SET first_name = ?, last_name = ?, phone = ?, birth_date = ?,
+            department_id = ?, position = ?, date_hired = ?
+        WHERE id = ?
+        `,
+        [firstName, lastName, phone, birthDate, departmentId, position, dateHired, id]
+    );
+};
+
+const updateEmploymentStatus = async (id, status) => {
+    await pool.execute(
+        `UPDATE employees SET employment_status = ? WHERE id = ?`,
+        [status, id]
+    );
+};
+
 module.exports = {
     createEmployee,
     findAllEmployees,
     findEmployeeById,
     findEmployeeByUserId,
-    updateOwnProfile
+    updateOwnProfile,
+    updateEmployee,
+    updateEmploymentStatus
 };

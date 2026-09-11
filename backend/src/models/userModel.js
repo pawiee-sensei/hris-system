@@ -91,6 +91,20 @@ const clearResetToken = async (id) => {
     );
 };
 
+const findUsersWithoutEmployeeProfile = async () => {
+    const [rows] = await pool.execute(
+        `
+        SELECT u.id, u.email, u.role
+        FROM users u
+        LEFT JOIN employees e ON e.user_id = u.id
+        WHERE e.id IS NULL
+        ORDER BY u.email ASC
+        `
+    );
+
+    return rows;
+};
+
 module.exports = {
     findUserByEmail,
     findUserById,
@@ -98,6 +112,7 @@ module.exports = {
     updatePasswordHash,
     updateResetToken,
     findUserByResetToken,
-    clearResetToken
+    clearResetToken,
+    findUsersWithoutEmployeeProfile
 };
 

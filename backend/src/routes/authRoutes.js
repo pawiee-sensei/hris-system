@@ -7,7 +7,8 @@ const {
     changePasswordControllerFn,
     resetPasswordControllerFn,
     forgotPasswordControllerFn,
-    resetPasswordWithTokenControllerFn
+    resetPasswordWithTokenControllerFn,
+    getUnassignedUsersControllerFn
 } = require("../controllers/authController");
 
 const {
@@ -76,6 +77,14 @@ router.post(
     resetPasswordWithTokenValidation,
     handleValidationError,
     asyncHandler(resetPasswordWithTokenControllerFn)
+);
+
+// GET /api/auth/unassigned-users
+router.get(
+    "/unassigned-users",
+    authMiddleware,
+    authorize("ADMIN", "HR"),
+    asyncHandler(getUnassignedUsersControllerFn)
 );
 
 module.exports = router;

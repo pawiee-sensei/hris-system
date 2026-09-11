@@ -10,7 +10,8 @@ const {
     updatePasswordHash,
     updateResetToken,
     findUserByResetToken,
-    clearResetToken
+    clearResetToken,
+    findUsersWithoutEmployeeProfile
 } = require("../models/userModel");
 
 const generateToken = require("../utils/generateToken");
@@ -140,11 +141,16 @@ const resetPasswordWithTokenService = async (token, newPassword) => {
     await clearResetToken(user.id);
 };
 
+const getUnassignedUsersService = async () => {
+    return await findUsersWithoutEmployeeProfile();
+};
+
 module.exports = {
     registerUserService,
     loginUserService,
     changePasswordService,
     resetPasswordService,
     forgotPasswordService,
-    resetPasswordWithTokenService
+    resetPasswordWithTokenService,
+    getUnassignedUsersService
 };

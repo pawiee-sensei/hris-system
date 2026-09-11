@@ -4,7 +4,8 @@ const {
     changePasswordService,
     resetPasswordService,
     forgotPasswordService,
-    resetPasswordWithTokenService
+    resetPasswordWithTokenService,
+    getUnassignedUsersService
 } = require("../services/authService"); 
 
 // Handle user registration request.
@@ -82,6 +83,15 @@ const resetPasswordWithTokenControllerFn = async (req, res) => {
     });
 };
 
+const getUnassignedUsersControllerFn = async (req, res) => {
+    const users = await getUnassignedUsersService();
+
+    res.status(200).json({
+        success: true,
+        data: users
+    });
+};
+
 module.exports = {
     registerController,
     loginController,
@@ -89,6 +99,7 @@ module.exports = {
     changePasswordControllerFn,
     resetPasswordControllerFn,
     forgotPasswordControllerFn,
-    resetPasswordWithTokenControllerFn
+    resetPasswordWithTokenControllerFn,
+    getUnassignedUsersControllerFn
 };
 

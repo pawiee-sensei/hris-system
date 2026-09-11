@@ -29,3 +29,8 @@ export const resetPassword = async (data) => {
     const response = await axiosClient.post("/auth/reset-password", data);
     return response.data;
 };
+
+export const getUnassignedUsers = async () => {
+    const response = await axiosClient.get("/auth/unassigned-users");
+    return response.data;
+};

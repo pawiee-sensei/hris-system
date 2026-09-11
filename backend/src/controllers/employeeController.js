@@ -3,7 +3,9 @@ const {
     getAllEmployeesService,
     getEmployeeByIdService,
     getMyProfileService,
-    updateMyProfileService
+    updateMyProfileService,
+    updateEmployeeService,
+    updateEmploymentStatusService
 } = require("../services/employeeService");
 
 const createEmployeeControllerFn = async (req, res) => {
@@ -53,10 +55,32 @@ const updateMyProfileControllerFn = async (req, res) => {
     });
 };
 
+const updateEmployeeControllerFn = async (req, res) => {
+    const employee = await updateEmployeeService(req.params.id, req.body);
+
+    res.status(200).json({
+        success: true,
+        message: "Employee updated successfully",
+        data: employee
+    });
+};
+
+const updateEmploymentStatusControllerFn = async (req, res) => {
+    const employee = await updateEmploymentStatusService(req.params.id, req.body.status);
+
+    res.status(200).json({
+        success: true,
+        message: "Employee status updated successfully",
+        data: employee
+    });
+};
+
 module.exports = {
     createEmployeeControllerFn,
     getAllEmployeesControllerFn,
     getEmployeeByIdControllerFn,
     getMyProfileControllerFn,
-    updateMyProfileControllerFn
+    updateMyProfileControllerFn,
+    updateEmployeeControllerFn,
+    updateEmploymentStatusControllerFn
 };

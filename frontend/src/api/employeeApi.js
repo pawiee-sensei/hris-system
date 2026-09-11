@@ -24,3 +24,13 @@ export const updateMyProfile = async (data) => {
     const response = await axiosClient.patch("/employees/me", data);
     return response.data;
 };
+
+export const updateEmployee = async (id, data) => {
+    const response = await axiosClient.patch(`/employees/${id}`, data);
+    return response.data;
+};
+
+export const updateEmploymentStatus = async (id, status) => {
+    const response = await axiosClient.patch(`/employees/${id}/status`, { status });
+    return response.data;
+};

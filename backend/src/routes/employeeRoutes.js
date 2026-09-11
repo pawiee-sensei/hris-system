@@ -5,7 +5,9 @@ const {
     getAllEmployeesControllerFn,
     getEmployeeByIdControllerFn,
     getMyProfileControllerFn,
-    updateMyProfileControllerFn
+    updateMyProfileControllerFn,
+    updateEmployeeControllerFn,
+    updateEmploymentStatusControllerFn
 } = require("../controllers/employeeController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -14,7 +16,9 @@ const asyncHandler = require("../utils/asyncHandler");
 const handleValidationError = require("../middleware/handleValidationError");
 const {
     createEmployeeValidation,
-    updateMyProfileValidation
+    updateMyProfileValidation,
+    updateEmployeeValidation,
+    updateEmploymentStatusValidation
 } = require("../middleware/validation/employeeValidation");
 
 const router = express.Router();
@@ -59,6 +63,26 @@ router.get(
     authMiddleware,
     authorize("ADMIN", "HR", "MANAGER"),
     asyncHandler(getEmployeeByIdControllerFn)
+);
+
+// PATCH /api/employees/:id
+router.patch(
+    "/:id",
+    authMiddleware,
+    authorize("ADMIN", "HR"),
+    updateEmployeeValidation,
+    handleValidationError,
+    asyncHandler(updateEmployeeControllerFn)
+);
+
+// PATCH /api/employees/:id/status
+router.patch(
+    "/:id/status",
+    authMiddleware,
+    authorize("ADMIN", "HR"),
+    updateEmploymentStatusValidation,
+    handleValidationError,
+    asyncHandler(updateEmploymentStatusControllerFn)
 );
 
 module.exports = router;
