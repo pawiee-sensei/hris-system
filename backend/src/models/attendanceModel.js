@@ -48,9 +48,34 @@ const findAttendanceByEmployee = async (employeeId) => {
     return rows;
 };
 
+const findAttendanceByEmployeePaginated = async (employeeId, limit, offset) => {
+    const [rows] = await pool.execute(
+        `
+        SELECT * FROM attendance
+        WHERE employee_id = ?
+        ORDER BY date DESC
+        LIMIT ${Number(limit)} OFFSET ${Number(offset)}
+        `,
+        [employeeId]
+    );
+
+    return rows;
+};
+
+const countAttendanceByEmployee = async (employeeId) => {
+    const [rows] = await pool.execute(
+        `SELECT COUNT(*) AS total FROM attendance WHERE employee_id = ?`,
+        [employeeId]
+    );
+
+    return rows[0].total;
+};
+
 module.exports = {
     clockIn,
     clockOut,
     findAttendanceByEmployeeAndDate,
-    findAttendanceByEmployee
+    findAttendanceByEmployee,
+    findAttendanceByEmployeePaginated,
+    countAttendanceByEmployee
 };

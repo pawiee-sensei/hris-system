@@ -2,7 +2,9 @@ const {
     clockIn,
     clockOut,
     findAttendanceByEmployeeAndDate,
-    findAttendanceByEmployee
+    findAttendanceByEmployee,
+    findAttendanceByEmployeePaginated,
+    countAttendanceByEmployee
 } = require("../models/attendanceModel");
 
 const { findEmployeeByUserId } = require("../models/employeeModel");
@@ -88,8 +90,28 @@ const getMyAttendanceService = async (userId) => {
     return await findAttendanceByEmployee(employeeId);
 };
 
+const getMyAttendancePaginatedService = async (userId, page = 1, limit = 8) => {
+    const employeeId = await resolveEmployeeId(userId);
+
+    const offset = (page - 1) * limit;
+
+    const records = await findAttendanceByEmployeePaginated(employeeId, limit, offset);
+    const total = await countAttendanceByEmployee(employeeId);
+
+    return {
+        records,
+        pagination: {
+            page: Number(page),
+            limit: Number(limit),
+            total,
+            totalPages: Math.ceil(total / limit)
+        }
+    };
+};
+
 module.exports = {
     clockInService,
     clockOutService,
-    getMyAttendanceService
+    getMyAttendanceService,
+    getMyAttendancePaginatedService
 };

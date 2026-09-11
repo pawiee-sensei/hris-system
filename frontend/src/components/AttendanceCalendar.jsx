@@ -13,7 +13,7 @@ const isPastDate = (date) => {
     return date < today;
 };
 
-const AttendanceCalendar = ({ records }) => {
+const AttendanceCalendar = ({ records, layout = "stacked" }) => {
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDay, setSelectedDay] = useState(null);
 
@@ -78,7 +78,8 @@ const AttendanceCalendar = ({ records }) => {
         : null;
 
     return (
-        <div className="attendance-calendar">
+        <div className={`attendance-calendar cal-layout-${layout}`}>
+            <div className="cal-body">
             <div className="cal-header">
                 <div className="cal-title">
                     <div className="cal-icon"><CalendarDays size={20} /></div>
@@ -105,7 +106,16 @@ const AttendanceCalendar = ({ records }) => {
                 {cells}
             </div>
 
-            {selectedRecord && (
+            <div className="cal-legend">
+                <span className="legend-item"><span className="dot status-ontime"></span> On time</span>
+                <span className="legend-item"><span className="dot status-late"></span> Late</span>
+                <span className="legend-item"><span className="dot status-absent"></span> Absent</span>
+                <span className="legend-item"><span className="dot status-none"></span> Weekend / No record</span>
+            </div>
+            </div>
+
+            <div className="cal-side">
+            {selectedRecord ? (
                 <div className="cal-details">
                     <div className="cal-details-header">
                         <strong>{selectedDateLabel}</strong>
@@ -132,13 +142,9 @@ const AttendanceCalendar = ({ records }) => {
                         </div>
                     </div>
                 </div>
+            ) : (
+                layout === "split" && <p className="cal-empty-hint">Select a day to view details</p>
             )}
-
-            <div className="cal-legend">
-                <span className="legend-item"><span className="dot status-ontime"></span> On time</span>
-                <span className="legend-item"><span className="dot status-late"></span> Late</span>
-                <span className="legend-item"><span className="dot status-absent"></span> Absent</span>
-                <span className="legend-item"><span className="dot status-none"></span> Weekend / No record</span>
             </div>
         </div>
     );

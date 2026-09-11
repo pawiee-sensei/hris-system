@@ -3,7 +3,8 @@ const express = require("express");
 const {
     clockInControllerFn,
     clockOutControllerFn,
-    getMyAttendanceControllerFn
+    getMyAttendanceControllerFn,
+    getMyAttendancePaginatedControllerFn
 } = require("../controllers/attendanceController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -30,6 +31,13 @@ router.get(
     "/me",
     authMiddleware,
     asyncHandler(getMyAttendanceControllerFn)
+);
+
+// GET /api/attendance/me/history?page=1&limit=8
+router.get(
+    "/me/history",
+    authMiddleware,
+    asyncHandler(getMyAttendancePaginatedControllerFn)
 );
 
 module.exports = router;

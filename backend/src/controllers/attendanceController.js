@@ -1,7 +1,8 @@
 const {
     clockInService,
     clockOutService,
-    getMyAttendanceService
+    getMyAttendanceService,
+    getMyAttendancePaginatedService
 } = require("../services/attendanceService");
 
 const clockInControllerFn = async (req, res) => {
@@ -33,8 +34,20 @@ const getMyAttendanceControllerFn = async (req, res) => {
     });
 };
 
+const getMyAttendancePaginatedControllerFn = async (req, res) => {
+    const { page, limit } = req.query;
+    const result = await getMyAttendancePaginatedService(req.user.userId, page, limit);
+
+    res.status(200).json({
+        success: true,
+        data: result.records,
+        pagination: result.pagination
+    });
+};
+
 module.exports = {
     clockInControllerFn,
     clockOutControllerFn,
-    getMyAttendanceControllerFn
+    getMyAttendanceControllerFn,
+    getMyAttendancePaginatedControllerFn
 };
