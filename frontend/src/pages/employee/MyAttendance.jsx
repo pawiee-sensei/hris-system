@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Clock, LogIn, LogOut } from "lucide-react";
 import { clockIn, clockOut, getMyAttendance, getMyAttendanceHistory } from "../../api/attendanceApi";
 import { formatDate } from "../../utils/formatDate";
+import { formatTime } from "../../utils/formatTime";
 import getErrorMessage from "../../utils/getErrorMessage";
 import Loader from "../../components/Loader";
 import AttendanceCalendar from "../../components/AttendanceCalendar";
@@ -139,9 +140,9 @@ const MyAttendance = () => {
                         {historyRecords.map((r) => (
                             <tr key={r.id}>
                                 <td>{formatDate(r.date)}</td>
-                                <td>{r.time_in || "-"}</td>
+                                <td>{formatTime(r.time_in)}</td>
                                 <td>{r.late_minutes}</td>
-                                <td>{r.time_out || "-"}</td>
+                                <td>{formatTime(r.time_out)}</td>
                                 <td>{r.undertime_minutes}</td>
                                 <td>{getTotalHours(r)}</td>
                                 <td>{getStatusBadge(r)}</td>

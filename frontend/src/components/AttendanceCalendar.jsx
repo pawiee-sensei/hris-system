@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CalendarDays, ChevronLeft, ChevronRight, Clock } from "lucide-react";
+import { formatTime } from "../utils/formatTime";
 import "./AttendanceCalendar.css";
 
 const isWeekday = (date) => {
@@ -129,7 +130,7 @@ const AttendanceCalendar = ({ records, layout = "stacked" }) => {
                             <Clock size={16} />
                             <div>
                                 <p className="cal-detail-label">Clock In</p>
-                                <p className="cal-detail-value">{selectedRecord.time_in || "-"}</p>
+                                <p className="cal-detail-value">{formatTime(selectedRecord.time_in)}</p>
                             </div>
                         </div>
 
@@ -137,7 +138,7 @@ const AttendanceCalendar = ({ records, layout = "stacked" }) => {
                             <Clock size={16} />
                             <div>
                                 <p className="cal-detail-label">Clock Out</p>
-                                <p className="cal-detail-value">{selectedRecord.time_out || "-"}</p>
+                                <p className="cal-detail-value">{formatTime(selectedRecord.time_out)}</p>
                             </div>
                         </div>
                     </div>

@@ -1,0 +1,180 @@
+.leave-header {
+    margin-bottom: 16px;
+}
+
+.leave-header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--color-primary);
+}
+
+.leave-header p {
+    margin: 4px 0 0;
+    color: var(--color-text-muted);
+}
+
+.leave-error {
+    background-color: #fee2e2;
+    color: var(--color-error);
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+}
+
+.leave-success {
+    background-color: #dcfce7;
+    color: var(--color-success);
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+}
+
+.leave-card {
+    background-color: var(--color-surface);
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 16px;
+    transition: var(--transition);
+}
+
+.leave-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.leave-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.leave-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.leave-icon.icon-blue { background-color: #dbeafe; color: var(--color-primary-light); }
+.leave-icon.icon-purple { background-color: #ede9fe; color: #6d28d9; }
+
+.leave-card-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--color-primary);
+}
+
+.leave-form label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 6px;
+}
+
+.optional {
+    font-weight: 400;
+    color: var(--color-text-muted);
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.leave-form select,
+.leave-form input,
+.leave-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-size: 14px;
+    transition: var(--transition);
+    font-family: inherit;
+    resize: vertical;
+}
+
+.leave-form select:focus,
+.leave-form input:focus,
+.leave-form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary-light);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-actions button {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: var(--radius);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.form-actions button:hover {
+    background-color: var(--color-primary-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.leave-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leave-table th {
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+}
+
+.leave-table td {
+    padding: 12px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.leave-table tbody tr:nth-child(even) {
+    background-color: var(--color-bg);
+}
+
+.leave-table tbody tr:hover {
+    background-color: #eff6ff;
+}
+
+.status-badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+.badge-green { background-color: #dcfce7; color: var(--color-success); }
+.badge-amber { background-color: #fef3c7; color: #b45309; }
+.badge-red { background-color: #fee2e2; color: var(--color-error); }
+
+.leave-count {
+    text-align: right;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin-top: 12px;
+}
