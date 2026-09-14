@@ -1,0 +1,215 @@
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.page-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background-color: #dbeafe;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--color-primary);
+}
+
+.page-header p {
+    margin: 2px 0 0;
+    color: var(--color-text-muted);
+}
+
+.grant-layout {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.section-card {
+    background-color: var(--color-surface);
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.grant-card .form-group {
+    margin-bottom: 16px;
+}
+
+.grant-card label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.grant-card .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.grant-card input,
+.grant-card select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.grant-card input:focus,
+.grant-card select:focus {
+    outline: none;
+    border-color: var(--color-primary-light);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.topup-hint {
+    background-color: #eff6ff;
+    color: var(--color-primary);
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+}
+
+.form-error-banner {
+    background-color: #fee2e2;
+    color: var(--color-error);
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    font-size: 13px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-primary {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 14px;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--color-primary-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.preview-card h3 {
+    margin: 0 0 16px;
+    font-size: 15px;
+    color: var(--color-primary);
+}
+
+.empty-hint {
+    color: var(--color-text-muted);
+    font-size: 13px;
+    text-align: center;
+    padding: 24px 0;
+}
+
+.preview-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.preview-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background-color: var(--color-bg);
+    border-radius: var(--radius);
+}
+
+.preview-type {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.preview-value {
+    font-size: 13px;
+    color: var(--color-primary-light);
+    font-weight: 600;
+}
+
+.yearly-card {
+    border-left: 3px solid var(--color-primary-light);
+}
+
+.yearly-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.yearly-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 4px;
+    font-size: 15px;
+    color: var(--color-primary);
+}
+
+.yearly-header p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    max-width: 480px;
+}
+
+.yearly-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.yearly-tag {
+    background-color: var(--color-bg);
+    color: var(--color-text-muted);
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 999px;
+}
+
+@media (max-width: 900px) {
+    .grant-layout {
+        grid-template-columns: 1fr;
+    }
+}

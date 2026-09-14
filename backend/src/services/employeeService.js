@@ -9,12 +9,17 @@ const {
 } = require("../models/employeeModel");
 
 const { clearManagerIfMatches } = require("../models/departmentModel");
+const { grantDefaultBalancesForEmployee } = require("./leaveBalanceService");
 
 const AppError = require("../utils/AppError");
 
 const createEmployeeService = async (data) => {
     try {
         const employeeId = await createEmployee(data);
+
+        // Give the new employee their starting leave balances for this year.
+        await grantDefaultBalancesForEmployee(employeeId);
+
         return { id: employeeId, ...data };
     } catch (err) {
         if (err.code === "ER_DUP_ENTRY") {

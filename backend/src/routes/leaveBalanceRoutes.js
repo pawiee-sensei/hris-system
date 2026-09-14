@@ -2,7 +2,10 @@ const express = require("express");
 
 const {
     grantLeaveBalanceControllerFn,
-    getMyLeaveBalancesControllerFn
+    getMyLeaveBalancesControllerFn,
+    getEmployeeBalancesControllerFn,
+    previewYearlyGenerationControllerFn,
+    generateYearlyBalancesControllerFn
 } = require("../controllers/leaveBalanceController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -28,6 +31,30 @@ router.get(
     "/me",
     authMiddleware,
     asyncHandler(getMyLeaveBalancesControllerFn)
+);
+
+// GET /api/leave-balances/employee/:employeeId
+router.get(
+    "/employee/:employeeId",
+    authMiddleware,
+    authorize("ADMIN", "HR"),
+    asyncHandler(getEmployeeBalancesControllerFn)
+);
+
+// GET /api/leave-balances/yearly-preview?year=2027
+router.get(
+    "/yearly-preview",
+    authMiddleware,
+    authorize("ADMIN"),
+    asyncHandler(previewYearlyGenerationControllerFn)
+);
+
+// POST /api/leave-balances/generate-yearly
+router.post(
+    "/generate-yearly",
+    authMiddleware,
+    authorize("ADMIN"),
+    asyncHandler(generateYearlyBalancesControllerFn)
 );
 
 module.exports = router;
