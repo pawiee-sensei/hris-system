@@ -8,6 +8,8 @@ const {
     updateEmploymentStatus
 } = require("../models/employeeModel");
 
+const { clearManagerIfMatches } = require("../models/departmentModel");
+
 const AppError = require("../utils/AppError");
 
 const createEmployeeService = async (data) => {
@@ -74,6 +76,13 @@ const updateEmployeeService = async (id, data) => {
         throw new AppError("Employee not found", 404);
     }
 
+    // If department is changing, clear manager status — they're leaving that department.
+    const isDepartmentChanging = data.departmentId && data.departmentId != employee.department_id;
+
+    if (isDepartmentChanging) {
+        await clearManagerIfMatches(id);
+    }
+
     await updateEmployee(id, data);
 
     return { id, ...data };
@@ -87,6 +96,11 @@ const updateEmploymentStatusService = async (id, status) => {
     }
 
     await updateEmploymentStatus(id, status);
+
+    // If this employee was managing a department, clear it — they're no longer active.
+    if (status === "TERMINATED" || status === "RESIGNED") {
+        await clearManagerIfMatches(id);
+    }
 
     return { id, employment_status: status };
 };
