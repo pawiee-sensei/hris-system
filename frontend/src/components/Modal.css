@@ -52,3 +52,7 @@
 .modal-body {
     padding: 24px;
 }
+
+.modal-large {
+    max-width: 900px;
+}

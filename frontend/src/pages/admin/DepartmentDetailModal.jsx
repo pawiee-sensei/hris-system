@@ -110,7 +110,7 @@ const DepartmentDetailModal = ({ departmentId, onClose, onUpdated }) => {
     }
 
     return (
-        <Modal title={department.name} onClose={onClose}>
+        <Modal title={department.name} onClose={onClose} size="large">
             <div className="dept-modal-manager">
                 <UserCog size={16} />
                 {department.manager_name ? (
