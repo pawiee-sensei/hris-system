@@ -21,6 +21,7 @@ import DepartmentList from './pages/admin/DepartmentList'
 import LeaveApprovals from './pages/admin/LeaveApprovals'
 import LeaveBalanceGrant from './pages/admin/LeaveBalanceGrant'
 import AnnouncementCreate from './pages/admin/AnnouncementCreate'
+import NotFound from './pages/shared/NotFound'
 
 function App() {
   return (
@@ -148,6 +149,8 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }
