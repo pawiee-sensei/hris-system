@@ -1,4 +1,6 @@
 import { createContext, useState, useCallback } from "react";
+import { CheckCircle, XCircle } from "lucide-react";
+import "./ToastContext.css";
 
 export const ToastContext = createContext();
 
@@ -18,6 +20,7 @@ export const ToastProvider = ({ children }) => {
             {children}
             {toast && (
                 <div className={`toast toast-${toast.type}`}>
+                    {toast.type === "error" ? <XCircle size={18} /> : <CheckCircle size={18} />}
                     {toast.message}
                 </div>
             )}

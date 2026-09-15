@@ -145,6 +145,20 @@ const getUnassignedUsersService = async () => {
     return await findUsersWithoutEmployeeProfile();
 };
 
+const getCurrentUserService = async (userId) => {
+    const user = await findUserById(userId);
+
+    if (!user) {
+        throw new AppError("User not found", 404);
+    }
+
+    return {
+        id: user.id,
+        email: user.email,
+        role: user.role
+    };
+};
+
 module.exports = {
     registerUserService,
     loginUserService,
@@ -152,5 +166,6 @@ module.exports = {
     resetPasswordService,
     forgotPasswordService,
     resetPasswordWithTokenService,
-    getUnassignedUsersService
+    getUnassignedUsersService,
+    getCurrentUserService
 };

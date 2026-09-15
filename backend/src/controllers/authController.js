@@ -5,7 +5,8 @@ const {
     resetPasswordService,
     forgotPasswordService,
     resetPasswordWithTokenService,
-    getUnassignedUsersService
+    getUnassignedUsersService,
+    getCurrentUserService
 } = require("../services/authService"); 
 
 // Handle user registration request.
@@ -40,10 +41,12 @@ const loginController = async (req, res) => {
     });
 };
 
-const meController = (req, res) => {
+const meController = async (req, res) => {
+    const user = await getCurrentUserService(req.user.userId);
+
     res.status(200).json({
         success: true,
-        data: req.user
+        data: user
     });
 };
 

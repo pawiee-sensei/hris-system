@@ -5,6 +5,10 @@ import "./Navbar.css";
 const Navbar = () => {
     const { user } = useAuth();
 
+    if (!user) {
+        return <div className="navbar" />;
+    }
+
     return (
         <div className="navbar">
             <div className="navbar-search">
