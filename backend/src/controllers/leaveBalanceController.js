@@ -2,13 +2,18 @@ const {
     grantLeaveBalanceService,
     getMyLeaveBalancesService,
     previewYearlyGenerationService,
-    generateYearlyBalancesService
+    generateYearlyBalancesService,
+    getGrantLogsForEmployeeService,
+    getAllGrantLogsService
 } = require("../services/leaveBalanceService");
 
 const { findEmployeeByUserId } = require("../models/employeeModel");
 
 const grantLeaveBalanceControllerFn = async (req, res) => {
-    const balance = await grantLeaveBalanceService(req.body);
+    const balance = await grantLeaveBalanceService({
+        ...req.body,
+        grantedBy: req.user.userId
+    });
 
     res.status(201).json({
         success: true,
@@ -55,10 +60,30 @@ const generateYearlyBalancesControllerFn = async (req, res) => {
     });
 };
 
+const getGrantLogsForEmployeeControllerFn = async (req, res) => {
+    const logs = await getGrantLogsForEmployeeService(req.params.employeeId);
+
+    res.status(200).json({
+        success: true,
+        data: logs
+    });
+};
+
+const getAllGrantLogsControllerFn = async (req, res) => {
+    const logs = await getAllGrantLogsService();
+
+    res.status(200).json({
+        success: true,
+        data: logs
+    });
+};
+
 module.exports = {
     grantLeaveBalanceControllerFn,
     getMyLeaveBalancesControllerFn,
     getEmployeeBalancesControllerFn,
     previewYearlyGenerationControllerFn,
-    generateYearlyBalancesControllerFn
+    generateYearlyBalancesControllerFn,
+    getGrantLogsForEmployeeControllerFn,
+    getAllGrantLogsControllerFn
 };

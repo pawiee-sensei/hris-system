@@ -22,7 +22,13 @@ const grantLeaveBalanceValidation = [
         .withMessage("Leave type must be SICK, VACATION, or EMERGENCY"),
     body("totalCredits")
         .isInt({ min: 1, max: 365 })
-        .withMessage("Total credits must be between 1 and 365")
+        .withMessage("Total credits must be between 1 and 365"),
+    body("reason")
+        .trim()
+        .notEmpty()
+        .withMessage("A reason is required for granting leave balance")
+        .isLength({ max: 255 })
+        .withMessage("Reason must be under 255 characters")
 ];
 
 module.exports = {

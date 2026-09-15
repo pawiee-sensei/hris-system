@@ -213,3 +213,36 @@
         grid-template-columns: 1fr;
     }
 }
+
+.logs-card {
+    margin-bottom: 20px;
+}
+
+.logs-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 16px;
+    font-size: 15px;
+    color: var(--color-primary);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th {
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.data-table td {
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--color-border);
+}

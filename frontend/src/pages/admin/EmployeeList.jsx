@@ -208,26 +208,28 @@ const EmployeeList = () => {
                     <EmptyState message="No employees found" />
                 ) : (
                     <table className="data-table">
-                        <thead>
-                            <tr>
-                                <th>Emp #</th>
-                                <th>Name</th>
-                                <th>Department</th>
-                                <th>Position</th>
-                                <th>Date Hired</th>
-                                <th>Status</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredEmployees.map((e) => (
-                                <tr key={e.id}>
-                                    <td>{e.employee_number}</td>
-                                    <td>{e.first_name} {e.last_name}</td>
-                                    <td>{getDepartmentName(e.department_id)}</td>
-                                    <td>{e.position}</td>
-                                    <td>{formatDate(e.date_hired)}</td>
-                                    <td>{getStatusBadge(e.employment_status)}</td>
+                    <thead>
+                        <tr>
+                            <th>Emp #</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th>Position</th>
+                            <th>Date Hired</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredEmployees.map((e) => (
+                            <tr key={e.id}>
+                                <td>{e.employee_number}</td>
+                                <td>{e.first_name} {e.last_name}</td>
+                                <td>{e.email}</td>
+                                <td>{getDepartmentName(e.department_id)}</td>
+                                <td>{e.position}</td>
+                                <td>{formatDate(e.date_hired)}</td>
+                                <td>{getStatusBadge(e.employment_status)}</td>
                                     <td className="actions-cell">
                                         <button
                                             className="menu-trigger"

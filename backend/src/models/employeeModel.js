@@ -34,7 +34,12 @@ const createEmployee = async ({
 
 const findAllEmployees = async () => {
     const [rows] = await pool.execute(
-        `SELECT * FROM employees ORDER BY created_at DESC`
+        `
+        SELECT e.*, u.email
+        FROM employees e
+        JOIN users u ON u.id = e.user_id
+        ORDER BY e.created_at DESC
+        `
     );
 
     return rows;

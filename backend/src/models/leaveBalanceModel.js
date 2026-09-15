@@ -60,11 +60,55 @@ const findEmployeeIdsMissingYearBalance = async (year, leaveType) => {
     return rows.map((r) => r.id);
 };
 
+const createGrantLog = async ({ employeeId, leaveType, year, creditsGranted, grantedBy, reason }) => {
+    const [result] = await pool.execute(
+        `
+        INSERT INTO leave_balance_grants (employee_id, leave_type, year, credits_granted, granted_by, reason)
+        VALUES (?, ?, ?, ?, ?, ?)
+        `,
+        [employeeId, leaveType, year, creditsGranted, grantedBy, reason]
+    );
+
+    return result.insertId;
+};
+
+const findGrantLogsByEmployee = async (employeeId) => {
+    const [rows] = await pool.execute(
+        `
+        SELECT g.*, u.email AS granted_by_email
+        FROM leave_balance_grants g
+        JOIN users u ON u.id = g.granted_by
+        WHERE g.employee_id = ?
+        ORDER BY g.created_at DESC
+        `,
+        [employeeId]
+    );
+
+    return rows;
+};
+
+const findAllGrantLogs = async () => {
+    const [rows] = await pool.execute(
+        `
+        SELECT g.*, u.email AS granted_by_email, CONCAT(e.first_name, ' ', e.last_name) AS employee_name
+        FROM leave_balance_grants g
+        JOIN users u ON u.id = g.granted_by
+        JOIN employees e ON e.id = g.employee_id
+        ORDER BY g.created_at DESC
+        `
+    );
+
+    return rows;
+};
+
 module.exports = {
     createLeaveBalance,
     findBalanceByEmployeeTypeYear,
     findBalancesByEmployeeYear,
     incrementUsedCredits,
     addToTotalCredits,
-    findEmployeeIdsMissingYearBalance
+    findEmployeeIdsMissingYearBalance,
+    createGrantLog,
+    findGrantLogsByEmployee,
+    findAllGrantLogs
 };

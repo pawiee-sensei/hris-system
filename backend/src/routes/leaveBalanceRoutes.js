@@ -5,7 +5,9 @@ const {
     getMyLeaveBalancesControllerFn,
     getEmployeeBalancesControllerFn,
     previewYearlyGenerationControllerFn,
-    generateYearlyBalancesControllerFn
+    generateYearlyBalancesControllerFn,
+    getGrantLogsForEmployeeControllerFn,
+    getAllGrantLogsControllerFn
 } = require("../controllers/leaveBalanceController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -39,6 +41,22 @@ router.get(
     authMiddleware,
     authorize("ADMIN", "HR"),
     asyncHandler(getEmployeeBalancesControllerFn)
+);
+
+// GET /api/leave-balances/logs
+router.get(
+    "/logs",
+    authMiddleware,
+    authorize("ADMIN"),
+    asyncHandler(getAllGrantLogsControllerFn)
+);
+
+// GET /api/leave-balances/employee/:employeeId/logs
+router.get(
+    "/employee/:employeeId/logs",
+    authMiddleware,
+    authorize("ADMIN", "HR"),
+    asyncHandler(getGrantLogsForEmployeeControllerFn)
 );
 
 // GET /api/leave-balances/yearly-preview?year=2027

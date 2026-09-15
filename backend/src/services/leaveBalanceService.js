@@ -4,7 +4,10 @@ const {
     findBalancesByEmployeeYear,
     incrementUsedCredits,
     addToTotalCredits,
-    findEmployeeIdsMissingYearBalance
+    findEmployeeIdsMissingYearBalance,
+    createGrantLog,
+    findGrantLogsByEmployee,
+    findAllGrantLogs
 } = require("../models/leaveBalanceModel");
 
 const AppError = require("../utils/AppError");
@@ -28,12 +31,15 @@ const grantDefaultBalancesForEmployee = async (employeeId) => {
 };
 
 // Manual grant — tops up if a balance already exists for this year, creates one if not.
-const grantLeaveBalanceService = async ({ employeeId, leaveType, totalCredits }) => {
+// Every manual grant requires who granted it and why — logged permanently, never overwritten.
+const grantLeaveBalanceService = async ({ employeeId, leaveType, totalCredits, grantedBy, reason }) => {
     const year = getCurrentYear();
     const existing = await findBalanceByEmployeeTypeYear(employeeId, leaveType, year);
 
     if (existing) {
         await addToTotalCredits(existing.id, totalCredits);
+        await createGrantLog({ employeeId, leaveType, year, creditsGranted: totalCredits, grantedBy, reason });
+
         return {
             employeeId, leaveType, year,
             totalCredits: existing.total_credits + Number(totalCredits),
@@ -43,7 +49,17 @@ const grantLeaveBalanceService = async ({ employeeId, leaveType, totalCredits })
     }
 
     const id = await createLeaveBalance({ employeeId, leaveType, year, totalCredits });
+    await createGrantLog({ employeeId, leaveType, year, creditsGranted: totalCredits, grantedBy, reason });
+
     return { id, employeeId, leaveType, year, totalCredits, usedCredits: 0, toppedUp: false };
+};
+
+const getGrantLogsForEmployeeService = async (employeeId) => {
+    return await findGrantLogsByEmployee(employeeId);
+};
+
+const getAllGrantLogsService = async () => {
+    return await findAllGrantLogs();
 };
 
 const getMyLeaveBalancesService = async (employeeId) => {
@@ -103,5 +119,7 @@ module.exports = {
     getMyLeaveBalancesService,
     deductLeaveBalanceService,
     generateYearlyBalancesService,
-    previewYearlyGenerationService
+    previewYearlyGenerationService,
+    getGrantLogsForEmployeeService,
+    getAllGrantLogsService
 };

@@ -24,3 +24,13 @@ export const generateYearlyBalances = async (year) => {
     const response = await axiosClient.post("/leave-balances/generate-yearly", { year });
     return response.data;
 };
+
+export const getAllGrantLogs = async () => {
+    const response = await axiosClient.get("/leave-balances/logs");
+    return response.data;
+};
+
+export const getEmployeeGrantLogs = async (employeeId) => {
+    const response = await axiosClient.get(`/leave-balances/employee/${employeeId}/logs`);
+    return response.data;
+};

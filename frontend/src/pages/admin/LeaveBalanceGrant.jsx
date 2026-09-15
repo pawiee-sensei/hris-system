@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Wallet, RefreshCw } from "lucide-react";
-import { grantLeaveBalance, getEmployeeBalances, previewYearlyGeneration, generateYearlyBalances } from "../../api/leaveBalanceApi";
+import { Wallet, RefreshCw, History } from "lucide-react";
+import { grantLeaveBalance, getEmployeeBalances, previewYearlyGeneration, generateYearlyBalances, getEmployeeGrantLogs } from "../../api/leaveBalanceApi";
+import { formatDate } from "../../utils/formatDate";
 import { getAllEmployees } from "../../api/employeeApi";
 import getErrorMessage from "../../utils/getErrorMessage";
 import useToast from "../../hooks/useToast";
@@ -21,7 +22,11 @@ const LeaveBalanceGrant = () => {
 
     const [leaveType, setLeaveType] = useState("VACATION");
     const [totalCredits, setTotalCredits] = useState("");
+    const [reason, setReason] = useState("");
     const [error, setError] = useState("");
+
+    const [grantLogs, setGrantLogs] = useState([]);
+    const [loadingLogs, setLoadingLogs] = useState(false);
 
     useEffect(() => {
         const load = async () => {
@@ -40,6 +45,7 @@ const LeaveBalanceGrant = () => {
     useEffect(() => {
         if (!employeeId) {
             setCurrentBalances([]);
+            setGrantLogs([]);
             return;
         }
 
@@ -54,7 +60,21 @@ const LeaveBalanceGrant = () => {
                 setLoadingBalances(false);
             }
         };
+
+        const loadLogs = async () => {
+            setLoadingLogs(true);
+            try {
+                const response = await getEmployeeGrantLogs(employeeId);
+                setGrantLogs(response.data);
+            } catch (err) {
+                setGrantLogs([]);
+            } finally {
+                setLoadingLogs(false);
+            }
+        };
+
         loadBalances();
+        loadLogs();
     }, [employeeId]);
 
     const existingForType = currentBalances.find((b) => b.leave_type === leaveType);
@@ -72,11 +92,14 @@ const LeaveBalanceGrant = () => {
         }
 
         try {
-            const response = await grantLeaveBalance({ employeeId, leaveType, totalCredits });
+            const response = await grantLeaveBalance({ employeeId, leaveType, totalCredits, reason });
             showToast(response.message);
             setTotalCredits("");
+            setReason("");
             const balancesRes = await getEmployeeBalances(employeeId);
             setCurrentBalances(balancesRes.data);
+            const logsRes = await getEmployeeGrantLogs(employeeId);
+            setGrantLogs(logsRes.data);
         } catch (err) {
             setError(getErrorMessage(err, "Failed to grant leave balance"));
         }
@@ -134,6 +157,16 @@ const LeaveBalanceGrant = () => {
                             </div>
                         </div>
 
+                        <div className="form-group">
+                            <label>Reason</label>
+                            <input
+                                value={reason}
+                                onChange={(e) => setReason(e.target.value)}
+                                placeholder="e.g. Family emergency, unused leave adjustment"
+                                required
+                            />
+                        </div>
+
                         {existingForType && (
                             <p className="topup-hint">
                                 This employee already has {existingForType.total_credits} {leaveType.toLowerCase()} days this year — this will add to it.
@@ -167,6 +200,41 @@ const LeaveBalanceGrant = () => {
                     )}
                 </div>
             </div>
+
+            {employeeId && (
+                <div className="section-card logs-card">
+                    <h3><History size={16} /> Grant History for This Employee</h3>
+
+                    {loadingLogs ? (
+                        <Loader variant="inline" />
+                    ) : grantLogs.length === 0 ? (
+                        <p className="empty-hint">No manual grants recorded yet</p>
+                    ) : (
+                        <table className="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Days</th>
+                                    <th>Granted By</th>
+                                    <th>Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {grantLogs.map((log) => (
+                                    <tr key={log.id}>
+                                        <td>{formatDate(log.created_at)}</td>
+                                        <td>{log.leave_type.charAt(0) + log.leave_type.slice(1).toLowerCase()}</td>
+                                        <td>+{log.credits_granted}</td>
+                                        <td>{log.granted_by_email}</td>
+                                        <td>{log.reason}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
+            )}
 
             <YearlyGenerationCard />
         </div>
