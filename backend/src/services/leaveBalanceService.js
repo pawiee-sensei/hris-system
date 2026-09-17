@@ -19,6 +19,37 @@ const DEFAULT_LEAVE_POLICY = {
     EMERGENCY: 5
 };
 
+// Anomaly review thresholds — flags are for review, not automatic blocking.
+const LARGE_GRANT_THRESHOLD = 15;
+const VAGUE_REASON_MIN_LENGTH = 10;
+const FREQUENT_GRANT_WINDOW_DAYS = 30;
+const FREQUENT_GRANT_COUNT = 3;
+
+const flagLog = (log, allLogsForEmployee) => {
+    const reasons = [];
+
+    if (log.credits_granted > LARGE_GRANT_THRESHOLD) {
+        reasons.push(`Large grant (${log.credits_granted} days)`);
+    }
+
+    if (log.reason.trim().length < VAGUE_REASON_MIN_LENGTH) {
+        reasons.push("Vague or very short reason");
+    }
+
+    const windowStart = new Date(log.created_at);
+    windowStart.setDate(windowStart.getDate() - FREQUENT_GRANT_WINDOW_DAYS);
+
+    const recentCount = allLogsForEmployee.filter((l) =>
+        new Date(l.created_at) >= windowStart && new Date(l.created_at) <= new Date(log.created_at)
+    ).length;
+
+    if (recentCount >= FREQUENT_GRANT_COUNT) {
+        reasons.push(`Frequent grants to this employee (${recentCount} within ${FREQUENT_GRANT_WINDOW_DAYS} days)`);
+    }
+
+    return { ...log, flagged: reasons.length > 0, flagReasons: reasons };
+};
+
 const getCurrentYear = () => new Date().getFullYear();
 
 // Called automatically when a new employee is created.
@@ -55,11 +86,21 @@ const grantLeaveBalanceService = async ({ employeeId, leaveType, totalCredits, g
 };
 
 const getGrantLogsForEmployeeService = async (employeeId) => {
-    return await findGrantLogsByEmployee(employeeId);
+    const logs = await findGrantLogsByEmployee(employeeId);
+    return logs.map((log) => flagLog(log, logs));
 };
 
 const getAllGrantLogsService = async () => {
-    return await findAllGrantLogs();
+    const logs = await findAllGrantLogs();
+
+    // Group by employee so frequency-check only compares grants to the SAME person.
+    const byEmployee = {};
+    logs.forEach((log) => {
+        if (!byEmployee[log.employee_id]) byEmployee[log.employee_id] = [];
+        byEmployee[log.employee_id].push(log);
+    });
+
+    return logs.map((log) => flagLog(log, byEmployee[log.employee_id]));
 };
 
 const getMyLeaveBalancesService = async (employeeId) => {

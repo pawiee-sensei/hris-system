@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Wallet, RefreshCw, History } from "lucide-react";
-import { grantLeaveBalance, getEmployeeBalances, previewYearlyGeneration, generateYearlyBalances, getEmployeeGrantLogs } from "../../api/leaveBalanceApi";
+import { Wallet, RefreshCw, History, AlertTriangle } from "lucide-react";
+import { grantLeaveBalance, getEmployeeBalances, previewYearlyGeneration, generateYearlyBalances, getEmployeeGrantLogs, getAllGrantLogs } from "../../api/leaveBalanceApi";
 import { formatDate } from "../../utils/formatDate";
 import { getAllEmployees } from "../../api/employeeApi";
 import getErrorMessage from "../../utils/getErrorMessage";
@@ -28,6 +28,8 @@ const LeaveBalanceGrant = () => {
     const [grantLogs, setGrantLogs] = useState([]);
     const [loadingLogs, setLoadingLogs] = useState(false);
 
+    const [flaggedGrants, setFlaggedGrants] = useState([]);
+
     useEffect(() => {
         const load = async () => {
             try {
@@ -40,6 +42,16 @@ const LeaveBalanceGrant = () => {
             }
         };
         load();
+
+        const loadFlagged = async () => {
+            try {
+                const response = await getAllGrantLogs();
+                setFlaggedGrants(response.data.filter((l) => l.flagged));
+            } catch (err) {
+                setFlaggedGrants([]);
+            }
+        };
+        loadFlagged();
     }, []);
 
     useEffect(() => {
@@ -116,6 +128,38 @@ const LeaveBalanceGrant = () => {
                     <p>Assign leave credits to an active employee</p>
                 </div>
             </div>
+
+            {flaggedGrants.length > 0 && (
+                <div className="section-card flagged-alert-card">
+                    <h3><AlertTriangle size={16} /> {flaggedGrants.length} Grant(s) Flagged for Review</h3>
+                    <table className="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Employee</th>
+                                <th>Type</th>
+                                <th>Days</th>
+                                <th>Granted By</th>
+                                <th>Reason</th>
+                                <th>Why Flagged</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {flaggedGrants.map((log) => (
+                                <tr key={log.id}>
+                                    <td>{formatDate(log.created_at)}</td>
+                                    <td>{log.employee_name}</td>
+                                    <td>{log.leave_type.charAt(0) + log.leave_type.slice(1).toLowerCase()}</td>
+                                    <td>+{log.credits_granted}</td>
+                                    <td>{log.granted_by_email}</td>
+                                    <td>{log.reason}</td>
+                                    <td className="flag-reasons-cell">{log.flagReasons.join("; ")}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
 
             <div className="grant-layout">
                 <div className="section-card grant-card">
@@ -218,16 +262,24 @@ const LeaveBalanceGrant = () => {
                                     <th>Days</th>
                                     <th>Granted By</th>
                                     <th>Reason</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {grantLogs.map((log) => (
-                                    <tr key={log.id}>
+                                    <tr key={log.id} className={log.flagged ? "row-flagged" : ""}>
                                         <td>{formatDate(log.created_at)}</td>
                                         <td>{log.leave_type.charAt(0) + log.leave_type.slice(1).toLowerCase()}</td>
                                         <td>+{log.credits_granted}</td>
                                         <td>{log.granted_by_email}</td>
                                         <td>{log.reason}</td>
+                                        <td>
+                                            {log.flagged && (
+                                                <span className="flag-badge" title={log.flagReasons.join("; ")}>
+                                                    <AlertTriangle size={13} /> Review
+                                                </span>
+                                            )}
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
