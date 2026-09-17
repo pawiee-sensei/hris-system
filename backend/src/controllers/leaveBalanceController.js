@@ -8,6 +8,7 @@ const {
 } = require("../services/leaveBalanceService");
 
 const { findEmployeeByUserId } = require("../models/employeeModel");
+const AppError = require("../utils/AppError");
 
 const grantLeaveBalanceControllerFn = async (req, res) => {
     const balance = await grantLeaveBalanceService({
@@ -24,6 +25,11 @@ const grantLeaveBalanceControllerFn = async (req, res) => {
 
 const getMyLeaveBalancesControllerFn = async (req, res) => {
     const employee = await findEmployeeByUserId(req.user.userId);
+
+    if (!employee) {
+        throw new AppError("No employee profile linked to this account", 404);
+    }
+
     const balances = await getMyLeaveBalancesService(employee.id);
 
     res.status(200).json({
