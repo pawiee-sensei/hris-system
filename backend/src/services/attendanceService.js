@@ -40,9 +40,19 @@ const resolveEmployeeId = async (userId) => {
     return employee.id;
 };
 
+// Returns today's date in YYYY-MM-DD using LOCAL time, not UTC —
+// toISOString() converts to UTC first, which shifts late-night PH clock-ins to the wrong date.
+const getLocalDateString = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+};
+
 const clockInService = async (userId) => {
     const employeeId = await resolveEmployeeId(userId);
-    const today = new Date().toISOString().slice(0, 10);
+    const today = getLocalDateString();
     const now = new Date().toTimeString().slice(0, 8);
 
     const existing = await findAttendanceByEmployeeAndDate(employeeId, today);
@@ -65,7 +75,7 @@ const clockInService = async (userId) => {
 
 const clockOutService = async (userId) => {
     const employeeId = await resolveEmployeeId(userId);
-    const today = new Date().toISOString().slice(0, 10);
+    const today = getLocalDateString();
     const now = new Date().toTimeString().slice(0, 8);
 
     const existing = await findAttendanceByEmployeeAndDate(employeeId, today);
@@ -93,18 +103,22 @@ const getMyAttendanceService = async (userId) => {
 const getMyAttendancePaginatedService = async (userId, page = 1, limit = 8) => {
     const employeeId = await resolveEmployeeId(userId);
 
-    const offset = (page - 1) * limit;
+    // Clamp to safe integer ranges — bad or missing query params never reach SQL.
+    const safePage = Math.max(1, parseInt(page, 10) || 1);
+    const safeLimit = Math.min(100, Math.max(1, parseInt(limit, 10) || 8));
 
-    const records = await findAttendanceByEmployeePaginated(employeeId, limit, offset);
+    const offset = (safePage - 1) * safeLimit;
+
+    const records = await findAttendanceByEmployeePaginated(employeeId, safeLimit, offset);
     const total = await countAttendanceByEmployee(employeeId);
 
     return {
         records,
         pagination: {
-            page: Number(page),
-            limit: Number(limit),
+            page: safePage,
+            limit: safeLimit,
             total,
-            totalPages: Math.ceil(total / limit)
+            totalPages: Math.ceil(total / safeLimit)
         }
     };
 };
